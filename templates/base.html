@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href={% static 'css/index.css' %}>
+    {% block title %}
+        <title>Portfolio</title>
+    {% endblock %}
+</head>
+<body>
+    <main class="container">
+        {% include 'includes/navbar.html'%}
+        {% block content %}
+        {% endblock %}
+        {% include 'includes/footer.html'%}
+    </main>
+
+    <script src={% static 'js/index.js' %}></script>
+</body>
+</html>

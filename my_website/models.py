@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
@@ -15,12 +16,18 @@ class CustomUser(AbstractUser):
 
 class AboutMe(models.Model):
     """About me model"""
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='about_me')
     about_me = HTMLField(null=True, blank=True, help_text='Write something about me')
     image = models.ImageField(null=True, blank=True, upload_to='about_me/image')
     skills = models.ManyToManyField('Skill', blank=True, help_text='Add your skills')
     my_name = models.CharField(max_length=30, help_text='Enter your name')
     social_media = models.JSONField(null=True, blank=True, help_text='Add your social media links')
+
+    def clean(self):
+        if self.social_media:
+            for platform, link in self.social_media.items():
+                if not link.startswith("http"):
+                    raise ValidationError(f"{platform} uchun link noto'g'ri ko'rinmoqda.")
 
     def __str__(self):
         return self.my_name
@@ -94,17 +101,19 @@ class ProjectImage(models.Model):
     def __str__(self):
         return f"{self.project.title}"
 
+def validate_youtube_link(value):
+    if "youtube.com" not in value and "youtu.be" not in value:
+        raise ValidationError("Faqat YouTube linklarini kiriting.")
 
 class YoutubeVideo(models.Model):
     """Youtube video model"""
     title = models.CharField(max_length=100, help_text='Enter your video title')
-    link = models.URLField(help_text='Enter Youtube video link')
+    link = models.URLField(validators=[validate_youtube_link], help_text='Enter Youtube video link')
     thumbnail = models.ImageField(upload_to='image/youtube_thumbnail', help_text='Enter Youtube video thumbnail')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
-
 
 
 
