@@ -17,7 +17,7 @@ class CustomUser(AbstractUser):
 class AboutMe(models.Model):
     """About me model"""
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='about_me')
-    about_me = HTMLField(null=True, blank=True, help_text='Write something about me')
+    description = HTMLField(null=True, blank=True, help_text='Write something about me')
     image = models.ImageField(null=True, blank=True, upload_to='about_me/image')
     skills = models.ManyToManyField('Skill', blank=True, help_text='Add your skills')
     my_name = models.CharField(max_length=30, help_text='Enter your name')
