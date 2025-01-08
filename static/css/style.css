@@ -496,6 +496,11 @@ ol {
     object-fit: cover;
     width: 100%;
 }
+#credential_img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
 .about-area .about-me-box .infos {
     padding-top: 30px;
     position: initial;

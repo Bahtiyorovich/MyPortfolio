@@ -1,5 +1,15 @@
 from django.shortcuts import render
+from django.views.generic import ListView
+from .models import Blog
 
 # Create your views here.
-def blog(request):
-    return render(request, 'blog.html')
+class BlogListView(ListView):
+    model = Blog
+    template_name = 'blog-list.html'
+    context_object_name = 'blogs'
+
+    
+
+
+
+
